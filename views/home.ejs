@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+	<head>
+		<title>Login Status Monitor</title>
+		<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	
+        <Style>
+
+@font-face {
+  font-family: 'LOXO';
+  src: url('loxo-cufonfonts/LOXO.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Forzan-Light';
+  src: url('loxo-cufonfonts/Forzan-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GltpStarionRegular-rvv7p';
+  src: url('loxo-cufonfonts/GltpStarionRegular-rvv7p.otf') format('truetype');
+}
+
+body {
+      font-family: 'GltpStarionRegular-rvv7p', sans-serif;
+      height: 100vh;
+      letter-spacing: 2px;
+      /*background: url("https://i.imgur.com/HgflTDf.jpg") 50% fixed;*/
+      background-size: cover;
+    }
+    
+
+    /*button css*/ 
+    button {
+  background-color: rgb(53, 50, 49);
+  padding: 12px 45px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #ffffff;
+  border: none;
+  outline: none;
+  margin: 0;
+  font-weight: bold;
+
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
+}
+.submit:hover {
+  background-color: #5f5e5a;
+}
+/*end of button css*/
+
+    @keyframes spinner {
+      0% {
+        transform: rotateZ(0deg);
+      }
+      100% {
+        transform: rotateZ(359deg);
+      }
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+
+    .main-login-container {
+      margin: auto;
+      width: 60%;
+      border: 1px solid rgba(0, 0, 0, 0);
+      border-radius: 10px;
+      padding: 10px;
+  }
+
+  .main-login-container h1 {
+    text-align: center;
+  }
+    
+    .wrapper {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      width: 100%;
+      min-height: 100%;
+      padding: 20px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(255, 99, 71, 0); /*rgba(42, 140, 197, 0.493);*/
+    }
+    
+    .login {
+      border-radius: 2px 2px 5px 5px;
+      padding: 10px 20px 20px 20px;
+      width: 90%;
+      max-width: 320px;
+      background: #ffffff;
+      position: relative;
+      padding-bottom: 80px;
+      box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .login h1 {
+      color: #242424;
+      font-size: large;
+    }
+
+    .company-name-logo {
+      text-align: center;
+    }
+    
+    .login.loading button {
+      max-height: 100%;
+      padding-top: 50px;
+    }
+    
+    .login.loading button .spinner {
+      opacity: 1;
+      top: 40%;
+    }
+    
+    .login.ok button {
+      background-color: #8bc34a;
+    }
+    
+    .login.ok button .spinner {
+      border-radius: 0;
+      border-top-color: transparent;
+      border-right-color: transparent;
+      height: 20px;
+      animation: none;
+      transform: rotateZ(-45deg);
+    }
+    
+    .login input {
+      display: block;
+      padding: 8px 6px;
+      margin-bottom: 10px;
+      width: 100%;
+      border: 1px solid #ddd;
+      transition: border-width 0.2s ease;
+      border-radius: 5px;
+      color: #ccc;
+    }
+    
+    .login input+i.fa {
+      color: #fff;
+      font-size: 1em;
+      position: absolute;
+      margin-top: -37px;
+      opacity: 0;
+      left: 0;
+      transition: all 0.1s ease-in;
+    }
+    
+    .login input:focus {
+      outline: none;
+      color: #444;
+      border-color: #464544;
+      border-left-width: 35px;
+    }
+    
+    .login input:focus+i.fa {
+      opacity: 1;
+      left: 30px;
+      transition: all 0.25s ease-out;
+    }
+    
+    .login a {
+      font-size: 0.8em;
+      color: #363636; /*#2196F3;*/
+      text-decoration: none;
+    }
+    
+    form label {
+      color: #303030
+    }
+
+    .login .title {
+      color: #444;
+      font-size: 1.2em;
+      font-weight: bold;
+      margin: 10px 0 30px 0;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 20px;
+    }
+    
+    .login button {
+      width: 100%;
+      height: 100%;
+      padding: 10px 10px;
+      background: #ffa908; /*#2196F3;*/
+      color: #fff;
+      display: block;
+      border: none;
+      margin-top: 20px;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      max-height: 60px;
+      border: 0px solid rgba(0, 0, 0, 0.1);
+      border-radius: 0 0 2px 2px;
+      transform: rotateZ(0deg);
+      transition: all 0.1s ease-out;
+      border-bottom-width: 7px;
+    }
+    
+    .login button .spinner {
+      display: block;
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      border: 4px solid #ffffff;
+      border-top-color: rgba(255, 255, 255, 0.3);
+      border-radius: 100%;
+      left: 50%;
+      top: 0;
+      opacity: 0;
+      margin-left: -20px;
+      margin-top: -20px;
+      animation: spinner 0.6s infinite linear;
+      transition: top 0.3s 0.3s ease, opacity 0.3s 0.3s ease, border-radius 0.3s ease;
+      box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
+    }
+    
+    .login:not(.loading) button:hover {
+      box-shadow: 0px 1px 3px #2196F3;
+    }
+    
+    .login:not(.loading) button:focus {
+      border-bottom-width: 4px;
+    }
+
+    .state {
+      font-size: large;
+    }
+    
+    footer {
+      display: block;
+      padding-top: 50px;
+      text-align: center;
+      color: #ddd;
+      font-weight: normal;
+      text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2);
+      font-size: 0.8em;
+    }
+    
+    footer a,
+    footer a:link {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .signin-register-btn { 
+      display: block;
+      color: #ffffff;
+    }
+
+    .signin-register-btn a { 
+      display: block;
+      color: #ffffff;
+    }
+
+    @media screen  and (max-width: 601px) {
+      .main-login-container {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .wrapper {
+        padding: 5px;
+      }
+
+      .login {
+        width: 100%;
+      }
+    }
+        </Style>
+</head>
+	<body>
+    <p><%= title %></p>
+        <h1>Login Status Monitor</h1>
+		<div class="home-page" id="home">
+            <h2>Home page</h2>
+            <p><button id="login-btn">Login/Register</button></p>
+            <img src="images/javascript.jpeg" 
+            style="margin: 10px; width: 90%; padding: 20px;"
+            alt="image not found" />
+        </div>
+
+        <div class="client-page" id="client">
+            <h1>Client Page</h1>
+            <p><button id="logout">Logut</button></p>
+            <div>
+                <p>name: Trevor <br />
+                    Surname: Mudau<br />
+                    contact: 076 335 8888<br />
+                    email: example@email.com<br />
+                    password: 12345</p>    
+            </div>
+        </div>
+
+        <script>
+            const homePage = document.getElementById("home-page");
+            const loginPage = document.getElementById("login-page");
+            const clientPage = document.getElementById("client-page");
+
+           
+
+            const loginBtn = document.getElementById("login-btn");
+            //const goBackBtn = document.getElementById("go-back");
+            const logoutBtn = document.getElementById("logout");
+            
+        const switchPages = (pageID) => {
+        const pages = {
+            home: "home",
+            login: "login",
+            client: "client"
+        };
+
+        Object.keys(pages).forEach((page) => {
+            const pageElement = document.getElementById(`${pages[page]}`);
+                
+            if (pageElement) {
+                return pageElement.style.display = page === pageID ? "block" : "none";
+            }
+            });
+        }
+
+        switchPages("home");
+
+        /*
+        goBackBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchPages("home");
+        })
+        */ 
+
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            //switchPages("login");
+
+            return location.assign('/login');
+        })
+
+ /*       
+        const myUserData = {
+                name: "Trevor",
+                Surname: "Mudau",
+                contact: "076 335 8888",
+                email: "example@email.com",
+                password: "12345",
+            };
+*/
+
+
+// Fetch user cookie data from the API
+const fetchUserData = async (urlLink) => {
+  try {
+    const userById = await fetch(urlLink);
+    return userById.json();
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    throw error; // re-throw the error to propagate it up the promise chain
+  }
+};
+
+/*
+// Map all and merge user data and fetch additional details from token
+const mapUserData = async (data) => {
+
+  try {
+    if (data.role === "USER") {
+      const user = await getUserById(data._id);
+      user._id = data._id;
+      return user; // Return the object directly
+    }
+  } catch (error) {
+    console.log(error);
+    return {}; // Return an empty object if an error occurs
+  }
+};
+*/
+
+        const storage = window.localStorage;
+
+        const initialState = {
+            userData: storage.getItem('exampleUserData') || null,
+            timestamp: null,
+            isLoggedIn: false
+        };
+
+        function cacheUserData(data) {
+  storage.setItem('exampleUserData', JSON.stringify(data));
+}
+
+function myReducer(state = initialState, action) {
+  switch(action.type) {
+    case "LOGIN":
+      cacheUserData(action.payload);
+      return {
+        userData: action.payload,
+        timestamp: Date.now(),
+        isLoggedIn: true
+      };
+    
+    case "LOGOUT" : 
+      storage.removeItem('exampleUserData');
+      return {
+        userData: null,
+        timestamp: null,
+        isLoggedIn: false
+      };  
+    default:  
+      return state;
+  }
+};
+
+const userData = async (urlLink, type) => {
+
+    //const data = await fetchUserData(urlLink);
+    const userData = await fetchUserData(urlLink);
+    //const userData = await mapUserData(data.user);
+    //const userData = await myUserData;
+
+    //console.log(JSON.stringify(userData, null, 1));
+
+    const state = myReducer(undefined, { type: type, payload: userData });
+
+    state.timeStamp = state.timestamp;
+    state.isLoggedIn = state.isLoggedIn;
+    //state.userData;
+
+    return state;
+    //return userData;
+};
+
+
+        
+
+        //logout
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            userData("https://jsonkeeper.com/b/3Z6L", "LOGOUT").then((result)=> {
+    console.log(JSON.stringify(result, null, 1));
+            switchPages("home");
+            })
+        });
+
+        </script>
+	</body>
+</html>
