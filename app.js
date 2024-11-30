@@ -6,6 +6,7 @@ var logger = require('morgan');
 const morgan = require('morgan');
 
 var homeRouter = require('./routes/home');
+var loginRouter = require('./routes/login');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var pagesRouter = require('./auth/route');
@@ -15,6 +16,7 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+//app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -34,6 +36,7 @@ app.get('/', (req, res) => {
 app.get('/', homeRouter);
 //app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/login', loginRouter);
 app.use('/api/auth', pagesRouter);
 
 //app.use('/login', (req, res) => res.render('login'))
@@ -49,8 +52,20 @@ app.use(function(req, res, next) {
 });
 
 //my routes
+/*
+app.get('/login', (req, res) => {
+  res.render("login", (err, html) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error rendering template');
+    } else {
+      res.send(html);
+    }
+  });
+});
+*/
+
 //app.get('/', (req, res) => res.render("home"));
-app.get("/signin", (req, res) => res.render("signin"));
 //app.get("/signin", (req, res) => res.render("client"));
 app.get("/user", (req, res) => res.render("user"))
 
